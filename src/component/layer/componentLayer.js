@@ -1,7 +1,7 @@
 import React from "react";
 import { Rnd } from "react-rnd";
 import PropTypes from 'prop-types';
-import Achievement from "../pion-component/achievement";
+import { ComponentRect } from '../../common/constant'
 import Reward from '../pion-component/reward';
 const style = {
     display: "flex",
@@ -12,8 +12,18 @@ const style = {
 };
 
 class ComponentLayer extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+    }
+    onDragStart(id, event, data) {
+        this.props.onSyncDragStart(id, event, data)
+    }
+    onDrag(id, event, data) {
+        this.props.onSyncDrag(id, event, data)
+    }
+    onDragStop(id, event, data) {
+        this.refs[id].init()
+        this.props.onSyncDragStop(id, event, data)
     }
 
     render() {
@@ -40,16 +50,16 @@ class ComponentLayer extends React.Component {
                 onResize={(e, direction, ref, delta, position) => {
                     const rect = {
                         x: position.x,
-                        y: position.y, 
-                        width: Number(ref.style.width.replace('px','')),
-                        height: Number(ref.style.height.replace('px',''))
+                        y: position.y,
+                        width: Number(ref.style.width.replace('px', '')),
+                        height: Number(ref.style.height.replace('px', ''))
                     }
                     this.props.onSyncResize(rect)
                 }}
             >
-           <Reward></Reward>
-           <Achievement></Achievement>
-      </Rnd>
+                <Reward ref={"reward_1"} id={"reward_1"} onDragStart={this.onDragStart.bind(this)} onDrag={this.onDrag.bind(this)} onDragStop={this.onDragStop.bind(this)} />
+                {/* <Achievement onDragStart={this.onDragStart.bind(this)} onDrag={this.onDrag.bind(this)} onDragStop={this.onDragStop.bind(this)} ></Achievement> */}
+            </Rnd>
         );
     }
 }
@@ -61,7 +71,11 @@ ComponentLayer.propTypes = {
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired
     }),
-    onSyncResize: PropTypes.func.isRequired
+    onSyncResize: PropTypes.func.isRequired,
+    onSyncDragStart: PropTypes.func.isRequired,
+    onSyncDrag: PropTypes.func.isRequired,
+    onSyncDragStop: PropTypes.func.isRequired
+
 };
 
 export default ComponentLayer

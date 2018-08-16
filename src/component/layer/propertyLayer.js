@@ -11,8 +11,8 @@ const style = {
 };
 
 class PropertyLayer extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     render() {

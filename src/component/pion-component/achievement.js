@@ -36,7 +36,7 @@ export default class Achievement extends React.Component {
         size={{ width: this.state.width, height: this.state.height }}
         position={{ x: this.state.x, y: this.state.y }}
         onDragStart={(e,data)=>{
-          console.log("onDragStart",e,data)
+          console.log("ondrag",e,data)
         }}
         onDrag={(e,data)=>{
           console.log("ondrag",e,data)
